@@ -21,11 +21,28 @@ describe("Auth flow && register", () => {
 
     expect(regRes.status).toBe(201);
 
-    const logRes = await request(app)
+    const loginBeforeVerify = await request(app)
       .post("/api/users/login")
       .send({ email: uniqueEmail, password });
 
-    expect(logRes.status).toBe(200);
-    expect(logRes.body.token).toBeDefined();
+    expect(loginBeforeVerify.status).toBe(401);
+
+    const user = await mongoose.connection
+      .collection("users")
+      .findOne({ email: uniqueEmail });
+
+    expect(user.verificationToken).toBeDefined();
+
+    const verifyRes = await request(app).get(
+      `/api/users/verify/${user.verificationToken}`,
+    );
+    expect(verifyRes.status).toBe(200);
+
+    const loginAfterVerify = await request(app)
+      .post("/api/users/login")
+      .send({ email: uniqueEmail, password });
+
+    expect(loginAfterVerify.status).toBe(200);
+    expect(loginAfterVerify.body.token).toBeDefined();
   });
 });

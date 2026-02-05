@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../app";
 import mongoose from "mongoose";
-import { env } from "../config.js";
+import { env } from "../config.ts";
 
 describe("Auth flow && register", () => {
   const uniqueEmail = `urer_${Date.now()}@text.com`;

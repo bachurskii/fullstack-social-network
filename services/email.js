@@ -1,11 +1,11 @@
 import nodemailer from "nodemailer";
-import { env } from "../config";
+import { env } from "../config.js";
 let transport = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
   auth: {
     user: env.smtpEmail,
-    pass: env.smthPass,
+    pass: env.smtpPass,
   },
 });
 

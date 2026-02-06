@@ -20,7 +20,11 @@ export default async function auth(req, res, next) {
     if (user.token !== token) {
       return res.status(401).json({ message: "Not authorized" });
     }
-    req.user = user;
+    req.user = {
+      _id: user._id.toString(),
+      email: user.email,
+      subscription: user.subscription,
+    };
     next();
   } catch (error) {
     console.error("JWT Verification Error:", error.name, error.message);

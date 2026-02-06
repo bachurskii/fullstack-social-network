@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import { Jimp } from "jimp";
 import fs from "fs/promises";
-import path from "path";
 import { nanoid } from "nanoid";
 import { sendVerificationEmail } from "../services/email.js";
 export const secret = env.jwtSecret;
@@ -53,15 +52,20 @@ export const login = async (req, res) => {
         expiresIn: "1h",
     });
     const updatedUser = await User.findByIdAndUpdate(user._id, { token: userToken }, { new: true });
-    return res.status(200).json({
-        token: updatedUser.token,
-        user: {
-            email: user.email,
-            subscription: user.subscription,
-        },
-    });
+    if (updatedUser !== null) {
+        return res.status(200).json({
+            token: updatedUser.token,
+            user: {
+                email: user.email,
+                subscription: user.subscription,
+            },
+        });
+    }
 };
 export const logout = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "Not authorized" });
+    }
     const userId = req.user._id;
     const user = await User.findByIdAndUpdate(userId, { token: null });
     if (!user) {
@@ -70,6 +74,9 @@ export const logout = async (req, res) => {
     return res.status(204).send();
 };
 export const current = (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "Not authorized" });
+    }
     const { email, subscription } = req.user;
     return res.status(200).json({
         email,
@@ -77,6 +84,9 @@ export const current = (req, res) => {
     });
 };
 export const changeSubscription = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "Not authorized" });
+    }
     const userId = req.user._id;
     const { subscription } = req.body;
     const user = await User.findByIdAndUpdate(userId, { subscription: req.body.subscription }, {
@@ -93,6 +103,9 @@ export const changeSubscription = async (req, res) => {
     });
 };
 export const changeAvatar = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: "Not authorized" });
+    }
     const userId = req.user._id;
     let file = req.file;
     if (!file) {
@@ -102,7 +115,7 @@ export const changeAvatar = async (req, res) => {
     const image = await Jimp.read(tmpPath);
     image.resize({ w: 250, h: 250 });
     const fileName = `${userId}_${Date.now()}.png`;
-    const finalPath = path.join(avatarsDir, fileName);
+    const finalPath = `${avatarsDir}/${fileName}`;
     await image.write(finalPath);
     await fs.unlink(tmpPath);
     const avatarURL = `/avatars/${fileName}`;

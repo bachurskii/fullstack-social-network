@@ -8,7 +8,7 @@ import morgan from "morgan";
 import cors from "cors";
 import contactsRouter from "./routes/contactsRouter.js";
 import userRouter from "./routes/usersRouter.js";
-import type { HttpError } from "./types.ts";
+import type { HttpError } from "./types.js";
 
 const app = express();
 

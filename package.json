@@ -5,7 +5,7 @@
     "start": "node dist/app.js",
     "build": "tsc",
     "dev": "tsx watch app.ts",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js dist/tests"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",
@@ -33,6 +33,7 @@
     "@types/gravatar": "^1.8.6",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.2.0",
+    "@types/nodemailer": "^7.0.9",
     "nodemon": "^3.0.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"

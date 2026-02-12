@@ -7,7 +7,14 @@ import {
   updateContactStatus,
 } from "../services/contactsService.js";
 
-import type, { Request, Response } from "express";
+import { Request, Response } from "express";
+
+interface contactIdParams {
+  contactId: string;
+}
+interface idParams {
+  id: string;
+}
 
 export const getAllContacts = async (req: Request, res: Response) => {
   const page = Math.max(1, Number(req.query.page) || 1);
@@ -39,7 +46,7 @@ export const getAllContacts = async (req: Request, res: Response) => {
   res.status(200).json(data);
 };
 
-export const getOneContact = async (req: Request, res: Response) => {
+export const getOneContact = async (req: Request<idParams>, res: Response) => {
   if (!req.user) {
     return res.status(401).json({ message: "Not authorized" });
   }
@@ -52,7 +59,7 @@ export const getOneContact = async (req: Request, res: Response) => {
   return res.status(200).json(data);
 };
 
-export const deleteContact = async (req: Request, res: Response) => {
+export const deleteContact = async (req: Request<idParams>, res: Response) => {
   if (!req.user) {
     return res.status(401).json({ message: "Not authorized" });
   }
@@ -76,7 +83,7 @@ export const createContact = async (req: Request, res: Response) => {
   res.status(201).json(data);
 };
 
-export const updateContact = async (req: Request, res: Response) => {
+export const updateContact = async (req: Request<idParams>, res: Response) => {
   if (!req.user) {
     return res.status(401).json({ message: "Not authorized" });
   }
@@ -95,7 +102,10 @@ export const updateContact = async (req: Request, res: Response) => {
   return res.status(200).json(data);
 };
 
-export const updateContactFavorite = async (req: Request, res: Response) => {
+export const updateContactFavorite = async (
+  req: Request<contactIdParams>,
+  res: Response,
+) => {
   if (!req.user) {
     return res.status(401).json({ message: "Not authorized" });
   }

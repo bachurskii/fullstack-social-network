@@ -9,7 +9,10 @@ let transport = nodemailer.createTransport({
   },
 });
 
-export async function sendVerificationEmail(toEmail, verificationToken) {
+export async function sendVerificationEmail(
+  toEmail: string,
+  verificationToken: string,
+) {
   const verificationUrl = `${env.baseUrl}/api/users/verify/${verificationToken}`;
   const verifyEmail = await transport.sendMail({
     from: '"Gay Thompson" <gay64@ethereal.email>',

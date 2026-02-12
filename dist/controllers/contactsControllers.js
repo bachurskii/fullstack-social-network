@@ -17,7 +17,9 @@ export const getAllContacts = async (req, res) => {
         favoriteFilter = false;
     }
     else {
-        res.status(400).json({ message: "Favorite must be a true of false" });
+        return res
+            .status(400)
+            .json({ message: "Favorite must be a true of false" });
     }
     const ownerId = req.user._id;
     const data = await listContacts(ownerId, {

@@ -61,6 +61,7 @@ export const login = async (req, res) => {
             },
         });
     }
+    return res.status(401).json({ message: "Not authorized" });
 };
 export const logout = async (req, res) => {
     if (!req.user) {
@@ -88,7 +89,6 @@ export const changeSubscription = async (req, res) => {
         return res.status(401).json({ message: "Not authorized" });
     }
     const userId = req.user._id;
-    const { subscription } = req.body;
     const user = await User.findByIdAndUpdate(userId, { subscription: req.body.subscription }, {
         new: true,
     });

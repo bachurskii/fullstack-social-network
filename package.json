@@ -2,7 +2,7 @@
   "name": "fullstack-social-network",
   "type": "module",
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node dist/server.js",
     "build": "tsc",
     "dev": "tsx watch app.ts",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js dist/tests"

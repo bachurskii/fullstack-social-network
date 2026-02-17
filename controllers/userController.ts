@@ -13,8 +13,8 @@ export const secret = env.jwtSecret;
 export const avatarsDir = paths.avatars;
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
+  const { name, email, password } = req.body;
+  console.log("BODY:", req.body);
   const user = await User.findOne({ email: email });
   if (user) {
     return res.status(409).json({ message: "Email in use" });
@@ -25,9 +25,10 @@ export const register = async (req: Request, res: Response) => {
   const avatar = gravatar.url(email, { s: "250", r: "pg", d: "retro" });
   const tokenEmail = nanoid();
 
-  sendVerificationEmail(email, tokenEmail);
+  await sendVerificationEmail(email, tokenEmail);
 
   const newUser = await User.create({
+    name: name,
     email: email,
     password: hash,
     avatarURL: avatar,

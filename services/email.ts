@@ -15,7 +15,7 @@ export async function sendVerificationEmail(
 ) {
   const verificationUrl = `${env.baseUrl}/api/users/verify/${verificationToken}`;
   const verifyEmail = await transport.sendMail({
-    from: '"Gay Thompson" <gay64@ethereal.email>',
+    from: '"Isaias Koepp" <isaias14@ethereal.email>',
     to: toEmail,
     subject: "Confirm your email",
     text: `Please, verify your email clicking by ${verificationUrl}`,
